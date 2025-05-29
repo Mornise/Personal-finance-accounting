@@ -5,6 +5,7 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) {
         String url = "jdbc:postgresql://aws-0-eu-west-3.pooler.supabase.com:5432/postgres?sslmode=require";
+        System.out.println("Исправил подключение");
         String user = "postgres.lkjziuhvskioazqrxmah";
         String password = "finanse_password";
 
