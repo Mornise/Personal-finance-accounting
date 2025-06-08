@@ -1,50 +1,109 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Account {
-    private Integer id;
-    private String first_name;
+    private Long id;
+    private Long userId;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private LocalDateTime createdAt;
 
-    public Account(Integer id, String first_name) {
+    // Конструктор для создания нового аккаунта без ID и даты
+    public Account(Long userId, String firstName, String middleName, String lastName) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+    }
+
+    // Конструктор с полным набором (используется при получении из БД)
+    public Account(Long id, Long userId, String firstName, String middleName, String lastName, LocalDateTime createdAt) {
         this.id = id;
-        this.first_name = first_name;
+        this.userId = userId;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.createdAt = createdAt;
     }
 
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
-                ", first_name='" + first_name + '\'' +
+                ", userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", createdAt=" + createdAt +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Account)) return false;
         Account account = (Account) o;
-        return Objects.equals(id, account.id) && Objects.equals(first_name, account.first_name);
+        return Objects.equals(id, account.id) &&
+                Objects.equals(userId, account.userId) &&
+                Objects.equals(firstName, account.firstName) &&
+                Objects.equals(middleName, account.middleName) &&
+                Objects.equals(lastName, account.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, first_name);
+        return Objects.hash(id, userId, firstName, middleName, lastName);
     }
 
-    public Integer getId() {
+    // Геттеры и сеттеры
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
