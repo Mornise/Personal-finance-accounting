@@ -13,7 +13,7 @@ public class AccountMenu {
         return account;
     }
 
-    public   void manageAccount() {
+    public void manageAccount() {
         System.out.println("\n-- Работа с аккаунтами --");
         System.out.println("1. Создать аккаунт");
         System.out.println("2. Найти аккаунт по ID");

@@ -1,5 +1,8 @@
 import model.Account;
+import model.Credit;
+import service.CreditService;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -14,7 +17,7 @@ public class MainMenu {
             System.out.println("2. Добавить кошелек");
             System.out.println("3. Добавить транзакцию (Приход/Расход)");
             System.out.println("4. Просмотр баланса кошелька");
-            System.out.println("5. Просмотр долгов и кредитов");
+            System.out.println("5. Работа с долгами и кредитами");
             System.out.println("6. Отчеты (по категориям, по времени)");
             System.out.println("7. Выход");
             System.out.print("Выберите пункт: ");
@@ -58,8 +61,13 @@ public class MainMenu {
 
     private static void viewDebtsAndCredits() {
         System.out.println("\n-- Кредиты и долги --");
+        Account account = accountMenu.getAccount();
+        System.out.println("Ваш аккаунт = " + account.getFirstName());
         // Тут должен быть вызов CreditService и DebtService
-        System.out.println("🔧 (заглушка: показать долги и кредиты)");
+        CreditMenu creditMenu = new CreditMenu();
+        creditMenu.InfoCredit(account);
+        DeptMenu deptMenu = new DeptMenu();
+        deptMenu.InfoDept(account);
     }
 
     private static void showReports() {
