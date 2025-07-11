@@ -25,9 +25,9 @@ public class MainMenu {
 
             switch (choice) {
                 case 1 -> accountMenu.manageAccount();
-                case 2 -> addWallet();
+                case 2 -> WalletMenu.addWallet();
                 case 3 -> addTransaction();
-                case 4 -> viewWallets();
+                case 4 -> WalletMenu.viewWallets();
                 case 5 -> viewDebtsAndCredits();
                 case 6 -> showReports();
                 case 7 -> {
@@ -38,28 +38,12 @@ public class MainMenu {
             }
         }
     }
-
-
-    private static void addWallet() {
-        System.out.println("\n-- Добавление кошелька --");
-        Account account = accountMenu.getAccount();
-        System.out.println("Вы в аккаунте" + account);
-        System.out.println("🔧 (заглушка: добавить кошелек)");
-    }
-
-    private static void addTransaction() {
+    static void addTransaction() {
         System.out.println("\n-- Добавление транзакции --");
         // Тут должен быть вызов TransactionService
         System.out.println("🔧 (заглушка: добавить транзакцию)");
-    }
-
-    private static void viewWallets() {
-        System.out.println("\n-- Список кошельков --");
-        // Тут должен быть вызов WalletService
-        System.out.println("🔧 (заглушка: показать список кошельков)");
-    }
-
-    private static void viewDebtsAndCredits() {
+            }
+    static void viewDebtsAndCredits() {
         System.out.println("\n-- Кредиты и долги --");
         Account account = accountMenu.getAccount();
         System.out.println("Ваш аккаунт = " + account.getFirstName());
@@ -70,9 +54,17 @@ public class MainMenu {
         deptMenu.InfoDept(account);
     }
 
-    private static void showReports() {
+    static void showReports() {
         System.out.println("\n-- Отчеты --");
         // Тут должен быть вызов ReportService
         System.out.println("🔧 (заглушка: показать отчеты)");
     }
 }
+
+
+
+
+
+
+
+
