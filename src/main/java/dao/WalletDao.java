@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface WalletDao {
     Optional<Wallet> getById(long id);
 
-    List<Wallet> getByAcountId(long account_id);
+    List<Wallet> getWalletByAcountId(long account_id);
 
     void save(Wallet wallet);
 

@@ -2,10 +2,7 @@ import dao.WalletDao;
 import dao.WalletDaoImpl;
 import model.Account;
 import model.Wallet;
-import service.AccountService;
 import service.WalletService;
-
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,67 +19,64 @@ public class WalletMenu {
         if (name.isEmpty()) {
             System.out.println("Имя не может быть пустым. Попробуйте снова.");
         }
+        String currency = "";
+        while (true){
         System.out.println("Выберите валюту: ");
         System.out.println("1. BYN");
         System.out.println("2. RUB");
         System.out.println("3. USD");
         int choice = scanner.nextInt();
-        StringBuilder currency = new StringBuilder();
         switch (choice) {
             case 1:
-                System.out.println("BYN");
-                currency.append("BYN");
+                currency = "BYN";
                 break;
             case 2:
-                System.out.println("RUB");
-                currency.append("RUB");
+                currency = "RUB";
                 break;
             case 3:
-                System.out.println("USD");
-                currency.append("USD");
+                currency = "USD";
                 break;
             default:
                 System.out.println("Некорректный выбор валюты. Операция отменена.");
-                return;
+                continue;
         }
         String type = "";
-        System.out.println("Выберите тип кошелька: ");
-        System.out.println("1. Карта");
-        System.out.println("2. Крипта");
-        System.out.println("3. Наличные");
-        int choice1 = scanner.nextInt();
-        switch (choice1) {
-            case 1:
-                System.out.println("Карта");
-                type = "Карта";
-                break;
-            case 2:
-                System.out.println("Крипта");
-                type = "Крипта";
-                break;
-            case 3:
-                System.out.println("Наличные");
-                type = "Наличные";
-                break;
-            default:
-                System.out.println("Некорректный выбор типа кошелька. Операция отменена.");
-                return;
-        }
+        while (true) {
+            System.out.println("Выберите тип кошелька: ");
+            System.out.println("1. Карта");
+            System.out.println("2. Крипта");
+            System.out.println("3. Наличные");
+            int choice1 = scanner.nextInt();
+            switch (choice1) {
+                case 1:
+                    type = "Карта";
+                    break;
+                case 2:
+                    type = "Крипта";
+                    break;
+                case 3:
+                    type = "Наличные";
+                    break;
+                default:
+                    System.out.println("Некорректный выбор типа кошелька. Операция отменена.");
+                    continue;
+            }
         try {
             Long account_id = account.getId();
-            walletService.createWallet(1L, name, new BigDecimal(0.0), currency.toString(), account_id, type);
+            Wallet wallet = new Wallet(name,currency,account_id,type);
+            walletService.createWallet(wallet);
             System.out.println("Кошелек создан");
             viewWallets();
         } catch (Exception e) {
             System.out.println("Произошла ошибка при создании кошелька: " + e.getMessage());
         }
-    }
+    }}}
     static void viewWallets() {
         System.out.println("\n-- Список кошельков --");
         try {
             Account account = MainMenu.accountMenu.getAccount();
             Long accountId = account.getId();
-            List<Wallet> wallets = walletDao.getByAcountId(accountId);
+            List<Wallet> wallets = walletDao.getWalletByAcountId(accountId);
             if (wallets.isEmpty()) {
                 System.out.println("У вас нет кошельков.");
             } else {
@@ -100,7 +94,7 @@ public class WalletMenu {
             long walletId = scanner.nextLong();
             Account account = MainMenu.accountMenu.getAccount();
             Long accountId = account.getId();
-            List<Wallet> wallets = walletDao.getByAcountId(accountId);
+            List<Wallet> wallets = walletDao.getWalletByAcountId(accountId);
             boolean found = false;
             for (Wallet wallet : wallets) {
                 if (wallet.getId() == walletId) {

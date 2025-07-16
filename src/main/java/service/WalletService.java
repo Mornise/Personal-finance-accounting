@@ -1,13 +1,8 @@
 package service;
 
-import dao.AccountDao;
-import dao.AccountDaoImpl;
 import dao.WalletDao;
 import dao.WalletDaoImpl;
-import model.Account;
 import model.Wallet;
-
-import java.math.BigDecimal;
 import java.util.Optional;
 
 public class WalletService {
@@ -16,9 +11,8 @@ public class WalletService {
     public Optional<Wallet> findWallet(long id) {
         return walletDao.getById(id);
     }
-    public void createWallet(Long id, String name, BigDecimal balance, String currency, Long account_id, String type) {
-        Wallet newWallet = new Wallet(id, name, balance, currency, account_id,type);
-        walletDao.save(newWallet);
+    public void createWallet(Wallet wallet) {
+        walletDao.save(wallet);
     }
     public boolean deleteWallet(long id) {
         return walletDao.delete(id);
