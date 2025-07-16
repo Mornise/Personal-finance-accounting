@@ -9,7 +9,9 @@ public class Account {
     private String firstName;
     private String middleName;
     private String lastName;
-    private LocalDateTime createdAt;
+    private String login;
+    private String password;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     // Конструктор для создания нового аккаунта без ID и даты
     public Account(Long userId, String firstName, String middleName, String lastName) {
@@ -17,6 +19,30 @@ public class Account {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Account(String firstName, String middleName, String lastName, String login, String password) {
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.login = login;
+        this.password = password;
     }
 
     // Конструктор с полным набором (используется при получении из БД)

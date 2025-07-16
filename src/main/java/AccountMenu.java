@@ -1,11 +1,6 @@
-import dao.WalletDao;
 import model.Account;
-import model.Wallet;
 import service.AccountService;
-import util.DbUtil;
 
-import java.sql.*;
-import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -18,16 +13,14 @@ public class AccountMenu {
         return account;
     }
 
-    public   void manageAccount() {
+    public void manageAccount() {
         System.out.println("\n-- Работа с аккаунтами --");
         System.out.println("1. Создать аккаунт");
-        System.out.println("2. Найти аккаунт по ID");
+        System.out.println("2. Войти в аккаунт");
         System.out.print("Выберите: ");
         int choice = Integer.parseInt(scanner.nextLine());
 
         if (choice == 1) {
-            System.out.print("User ID (например, Telegram ID): ");
-            Long userId = Long.parseLong(scanner.nextLine());
             System.out.print("Имя: ");
             String firstName = scanner.nextLine();
             System.out.print("Фамилия: ");
@@ -35,14 +28,25 @@ public class AccountMenu {
             System.out.print("Отчество: ");
             String middleName = scanner.nextLine();
 
-            accountService.createAccount(userId, firstName, middleName, lastName);
+            System.out.print("Логин: ");
+            String login = scanner.nextLine();
+
+            System.out.print("Пароль: ");
+            String password = scanner.nextLine();
+
+            System.out.print("Повторите пароль: ");
+            String passwordRepeat = scanner.nextLine();
+            ///Проверка на пароли passwordRepeat = password
+            accountService.createAccount(firstName, middleName, lastName, login, password);
             System.out.println("✅ Аккаунт создан!");
         } else if (choice == 2) {
-            System.out.print("Введите ID аккаунта: ");
-            long id = Long.parseLong(scanner.nextLine());
-            Optional<Account> account = accountService.findAccount(id);
+            System.out.print("Введите логин: ");
+            String login = scanner.nextLine();
+            System.out.print("Введите пароль: ");///
+            String password = scanner.nextLine();
+            Optional<Account> account = accountService.findAccount(login, password);
             account.ifPresent(value -> this.account = value);
-            System.out.println(account.isPresent() ? account : "❌ Аккаунт не найден.");
+            System.out.println(account.isPresent() ? account : "Проверьте логин или пароль");
         } else {
             System.out.println("Некорректный выбор.");
         }

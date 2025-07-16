@@ -26,6 +26,22 @@ public class AccountDaoImpl implements AccountDao {
         return Optional.empty();
     }
 
+    public Optional<Account> getByLoginAndPassword(String login, String password) {
+        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASSWORD)) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM account WHERE login = ? AND password = ?");
+            stmt.setString(1, login);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Account account = mapRowToAccount(rs);
+                return Optional.of(account);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     @Override
     public Optional<Account> getByUserId(long userId) {
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASSWORD)) {
@@ -59,26 +75,19 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void save(Account account) {
-        String sql = "INSERT INTO account (user_id, first_name, middle_name, last_name) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO account (first_name, middle_name, last_name, login, password, created_at) VALUES (?, ?, ?, ?,?, ?)";
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            stmt.setLong(1, account.getUserId());
-            stmt.setString(2, account.getFirstName());
-            stmt.setString(3, account.getMiddleName());
-            stmt.setString(4, account.getLastName());
+            stmt.setString(1, account.getFirstName());
+            stmt.setString(2, account.getMiddleName());
+            stmt.setString(3, account.getLastName());
+            stmt.setString(4, account.getLogin());
+            stmt.setString(5, account.getPassword());
+            stmt.setTimestamp(6, Timestamp.valueOf(account.getCreatedAt()));
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Creating account failed, no rows affected.");
-            }
-
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    account.setId(generatedKeys.getLong(1)); // установим id в объект
-                } else {
-                    throw new SQLException("Creating account failed, no ID obtained.");
-                }
             }
 
         } catch (SQLException e) {

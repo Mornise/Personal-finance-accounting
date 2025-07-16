@@ -15,9 +15,13 @@ public class AccountService {
         return accountDao.getById(id);
     }
 
+    public Optional<Account> findAccount(String login, String password) {
+        return accountDao.getByLoginAndPassword(login, password);
+    }
+
     // Создание нового аккаунта
-    public void createAccount(Long userId, String firstName, String middleName, String lastName) {
-        Account newAccount = new Account(userId, firstName, middleName, lastName);
+    public void createAccount(String firstName, String middleName, String lastName, String login, String password) {
+        Account newAccount = new Account(firstName, middleName, lastName,login, password);
         accountDao.save(newAccount);
     }
 

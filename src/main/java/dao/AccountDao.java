@@ -10,6 +10,8 @@ public interface AccountDao {
     // Получить аккаунт по ID
     Optional<Account> getById(long id);
 
+    Optional<Account> getByLoginAndPassword(String login, String password);
+
     // Получить аккаунт по Telegram user_id
     Optional<Account> getByUserId(long userId);
 
