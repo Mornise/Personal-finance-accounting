@@ -3,12 +3,13 @@ import model.Wallet;
 import util.DbUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class WalletDaoImpl implements WalletDao {
     @Override
-    public Optional<Wallet> getById(long id) {
+    public Optional getById(long id) {
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASSWORD)) {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM wallet WHERE id = ?");
             stmt.setLong(1, id);
@@ -22,21 +23,23 @@ public class WalletDaoImpl implements WalletDao {
         }
         return Optional.empty();
     }
+
     @Override
-    public List<Wallet> getByAcountId(long account_id) {
+    public List<Wallet> getWalletByAcountId(long account_id) {
+        List<Wallet> wallets = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASSWORD)) {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM wallet WHERE account_id = ?");
             stmt.setLong(1, account_id);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Wallet wallet = mapRowToWallet(rs);
-                return List.of(wallet);
+            while (rs.next()) {
+                wallets.add(mapRowToWallet(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return List.of();
+        return wallets;
     }
+
     @Override
     public void save(Wallet wallet) {
         String sql = "INSERT INTO wallet (name,balance,currency,account_id,type) VALUES (?,?,?,?,?)";
@@ -70,12 +73,13 @@ public class WalletDaoImpl implements WalletDao {
     @Override
     public void update(Wallet wallet) {
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASSWORD)) {
-            PreparedStatement stmt = conn.prepareStatement("UPDATE wallet SET name = ?, balance = ?,currency = ?, account_id = ? WHERE id = ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE wallet SET name = ?, balance = ?,currency = ?, account_id = ?,type = ? WHERE id = ?");
             stmt.setString(1, wallet.getName());
             stmt.setBigDecimal(2, wallet.getBalance());
             stmt.setString(3, wallet.getCurrency());
-            stmt.setLong(4,wallet.getAccount_id());
+            stmt.setLong(4, wallet.getAccount_id());
             stmt.setLong(5, wallet.getId());
+            stmt.setString(6, wallet.getType());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -99,11 +103,9 @@ public class WalletDaoImpl implements WalletDao {
         return new Wallet(
                 rs.getLong("id"),
                 rs.getString("name"),
-                rs.getBigDecimal("balance"),
                 rs.getString("currency"),
                 rs.getLong("account_id"),
                 rs.getString("type")
-
         );
-    }}
-
+    }
+}

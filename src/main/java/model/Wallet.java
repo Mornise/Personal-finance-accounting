@@ -1,30 +1,31 @@
 package model;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Wallet{
+public class Wallet {
     private Long id;
     private String name;
-    private BigDecimal balance;
+    private BigDecimal balance = BigDecimal.ZERO;
     private String currency;
     private Long account_id;
     private String type;
 
-    public Wallet(Long id, String name, BigDecimal balance, String currency, Long account_id, String type) {
+    public Wallet(Long id,String name, String currency, Long account_id, String type) {
         this.id = id;
         this.name = name;
-        this.balance = balance;
+        this.currency = currency;
+        this.type = type;
+        this.account_id = account_id;
+}
+    public Wallet(String name, String currency, Long account_id, String type) {
+        this.name = name;
         this.currency = currency;
         this.account_id = account_id;
         this.type = type;
     }
-
     public Long getId() {
         return id;
     }
-
     public String getName() {
         return name;
     }
