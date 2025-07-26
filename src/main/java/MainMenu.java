@@ -20,8 +20,13 @@ public class MainMenu {
                 System.out.println("5. Отчеты (по категориям, по времени)");
                 System.out.println("6. Выход");
                 System.out.print("Выберите пункт: ");
-                int choice = Integer.parseInt(scanner.nextLine());
-
+                int choice;
+                try {
+                    choice = Integer.parseInt(scanner.nextLine().trim());
+                } catch (NumberFormatException e) {
+                    System.out.println("Некорректный ввод. Пожалуйста, введите число от 1 до 6.");
+                    continue;
+                }
                 switch (choice) {
                     case 1 -> WalletMenu.addWallet();
                     case 2 -> addTransaction();
