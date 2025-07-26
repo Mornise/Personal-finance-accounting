@@ -74,6 +74,7 @@ public class AccountMenu {
             Optional<Account> account = accountService.findAccount(login, password);
             account.ifPresent(value -> this.account = value);
             System.out.println(account.isPresent() ? account : "Проверьте логин или пароль");
+            MainMenu.mainManuMethod();
         } else {
             System.out.println("Некорректный выбор.");
         }

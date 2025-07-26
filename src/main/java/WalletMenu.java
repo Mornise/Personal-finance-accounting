@@ -67,6 +67,7 @@ public class WalletMenu {
             walletService.createWallet(wallet);
             System.out.println("Кошелек создан");
             viewWallets();
+            MainMenu.mainManuMethod();
         } catch (Exception e) {
             System.out.println("Произошла ошибка при создании кошелька: " + e.getMessage());
         }
@@ -84,6 +85,7 @@ public class WalletMenu {
                     System.out.println(wallet);
                 }
             }
+            MainMenu.mainManuMethod();
         } catch (Exception e) {
             System.out.println("Ошибка при получении списка кошельков: " + e.getMessage());
         }
@@ -108,6 +110,7 @@ public class WalletMenu {
             } else {
                 System.out.println("Кошелек с таким ID не найден у вашего аккаунта.");
             }
+            MainMenu.mainManuMethod();
         } catch (Exception e) {
             System.out.println("Ошибка при удалении кошелька: " + e.getMessage());
         }
